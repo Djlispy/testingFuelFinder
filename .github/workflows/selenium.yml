@@ -1,0 +1,32 @@
+name: Daily Selenium Run
+
+on:
+  schedule:
+    # Runs every day at 4am UTC; adjust if you want a different time
+    - cron: "0 4 * * *"
+  workflow_dispatch:  # Allow manual run
+
+jobs:
+  run-selenium:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+          pip install selenium
+
+      - name: Run Selenium script
+        env:
+          DISPLAY: ":99"  # Needed if you use pyvirtualdisplay; optional here
+        run: |
+          python selenium_script.py
