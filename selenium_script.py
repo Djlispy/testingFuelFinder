@@ -19,19 +19,30 @@ driver = uc.Chrome(options=options)
 
 driver.get("https://www.7-eleven.com/locator")
 
-# Wait for the ZIP input field
 try:
+    # 1. Type ZIP into input
     zip_input = WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.ID, "form_location"))
     )
+    zip_input.clear()
     zip_input.send_keys("35679")
-    zip_input.send_keys(Keys.RETURN)
-    print("✅ ZIP code entered and submitted")
-except:
-    print("❌ Failed to interact with ZIP input")
+    print("✅ Entered ZIP code")
+
+    # 2. Click the Search button
+    search_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "input[type='submit'][value='Search']"))
+    )
+    search_button.click()
+    print("✅ Clicked Search button")
+
+except Exception as e:
+    print(f"❌ ZIP/Search interaction failed: {e}")
+
+# 3. Wait for JS/XHR to complete
+time.sleep(6)
+
 driver.save_screenshot("page.png")
 
-time.sleep(5)
 
 cookies = driver.get_cookies()
 print("All cookies:")
