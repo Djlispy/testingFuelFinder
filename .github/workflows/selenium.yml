@@ -28,3 +28,10 @@ jobs:
       - name: Run script with virtual display
         run: |
           xvfb-run -a python selenium_script.py
+
+        
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v3
+        with:
+            name: locator-screenshot
+            path: page.png

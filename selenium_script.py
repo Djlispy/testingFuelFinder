@@ -15,6 +15,8 @@ driver = uc.Chrome(options=options)
 
 driver.get("https://www.7-eleven.com/locator")
 time.sleep(10)  # Increase wait to give page time to finish dynamic JS
+driver.save_screenshot("page.png")
+
 
 cookies = driver.get_cookies()
 print("All cookies:")
