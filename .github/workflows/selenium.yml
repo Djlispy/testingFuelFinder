@@ -19,11 +19,17 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
+      - name: Install matching ChromeDriver v137
         run: |
             sudo apt-get update
-            sudo apt-get install -y chromium-browser chromium-chromedriver xvfb
+            sudo apt-get install -y chromium-browser
+            wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/137.0.7151.119/linux64/chromedriver-linux64.zip
+            unzip chromedriver-linux64.zip
+            sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
+            sudo chmod +x /usr/bin/chromedriver
+            rm -rf chromedriver-linux64.zip chromedriver-linux64
             pip install selenium pyvirtualdisplay
+
 
       - name: Run Selenium script with Xvfb
         run: |
