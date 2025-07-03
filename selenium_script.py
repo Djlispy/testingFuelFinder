@@ -1,6 +1,10 @@
 from pyvirtualdisplay import Display
 import undetected_chromedriver as uc
 import time, json, urllib
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 display = Display(visible=0, size=(1920, 1080))
 display.start()
@@ -14,9 +18,20 @@ options.add_argument("--window-size=1920,1080")
 driver = uc.Chrome(options=options)
 
 driver.get("https://www.7-eleven.com/locator")
-time.sleep(10)  # Increase wait to give page time to finish dynamic JS
+
+# Wait for the ZIP input field
+try:
+    zip_input = WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.ID, "form_location"))
+    )
+    zip_input.send_keys("35679")
+    zip_input.send_keys(Keys.RETURN)
+    print("✅ ZIP code entered and submitted")
+except:
+    print("❌ Failed to interact with ZIP input")
 driver.save_screenshot("page.png")
 
+time.sleep(5)
 
 cookies = driver.get_cookies()
 print("All cookies:")
