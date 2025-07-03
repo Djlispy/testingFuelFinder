@@ -16,6 +16,18 @@ options.add_argument("--window-size=1920,1080")
 driver = uc.Chrome(options=options)
 
 driver.get("https://www.7-eleven.com/locator")
+time.sleep(2)
+# Accept cookie consent popup first
+try:
+    accept_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Accept')]"))
+    )
+    driver.execute_script("arguments[0].scrollIntoView(true);", accept_button)
+    time.sleep(1)
+    driver.execute_script("arguments[0].click();", accept_button)
+    print("✅ Clicked cookie Accept button")
+except Exception as e:
+    print(f"❌ Could not click cookie Accept button: {e}")
 
 try:
     # 1. Wait for the ZIP input and type ZIP code
