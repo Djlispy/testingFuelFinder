@@ -2,36 +2,28 @@ name: Daily Selenium Run
 
 on:
   schedule:
-    # Runs every day at 4am UTC; adjust if you want a different time
-    - cron: "0 4 * * *"
-  workflow_dispatch:  # Allow manual run
+    - cron: "0 4 * * *"  # Every day at 4AM UTC
+  workflow_dispatch:
 
 jobs:
   run-selenium:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-
-      - name: Install matching ChromeDriver v137
+      - name: Install Chrome + Matching ChromeDriver v137
         run: |
-            sudo apt-get update
-            sudo apt-get install -y chromium-browser
-            wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/137.0.7151.119/linux64/chromedriver-linux64.zip
-            unzip chromedriver-linux64.zip
-            sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
-            sudo chmod +x /usr/bin/chromedriver
-            rm -rf chromedriver-linux64.zip chromedriver-linux64
-            pip install selenium pyvirtualdisplay
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+          wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/137.0.7151.119/linux64/chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
+          sudo chmod +x /usr/bin/chromedriver
+          rm -rf chromedriver-linux64.zip chromedriver-linux64
+          pip install selenium pyvirtualdisplay
 
-
-      - name: Run Selenium script with Xvfb
+      - name: Run script with virtual display
         run: |
-            xvfb-run -a python selenium_script.py
-
+          xvfb-run -a python selenium_script.py
