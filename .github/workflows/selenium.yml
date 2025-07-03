@@ -25,11 +25,10 @@ jobs:
             pip install selenium undetected-chromedriver pyvirtualdisplay
 
 
-      - name: Run script with virtual display
+      - name: Run Selenium with Xvfb
         run: |
-          xvfb-run -a python selenium_script.py
+            xvfb-run -a python selenium_script.py
 
-        
       - name: Upload screenshot
         uses: actions/upload-artifact@v3
         with:
