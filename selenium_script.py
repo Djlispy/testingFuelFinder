@@ -32,7 +32,7 @@ def main():
 
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-    time.sleep(2)  # allow site to fully load and generate cookies
+    time.sleep(15)  # allow site to fully load and generate cookies
 
 
     cookies = driver.get_cookies()
